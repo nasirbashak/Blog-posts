@@ -52,3 +52,32 @@ $("#logout-btn").click(function() {
 
 
 });
+
+$("#btn-signup").click(function() {
+
+    var email = $("#email").val();
+    var password = $("#password").val();
+    var confirmPassword = $("#confirmPassword").val();
+
+    firebase.auth().createUserWithEmailAndPassword(email, password).then(function() {
+
+        var user = firebase.auth().currentUser;
+
+        console.log(user);
+        window.alert("Your Signup successful with name " + user.displayName);
+
+        window.location.href = "signin.html";
+
+    }, function(error) {
+
+        var errCode = error.code;
+        var message = error.message;
+
+        window.alert("You have an error " + message);
+
+
+    });
+
+
+
+});
