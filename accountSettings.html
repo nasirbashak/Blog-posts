@@ -9,7 +9,7 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>Sign In Page</title>
+    <title>Account Settings</title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="">
@@ -31,7 +31,6 @@
     <script src="https://www.gstatic.com/firebasejs/7.2.2/firebase-database.js"></script>
     <script src="https://www.gstatic.com/firebasejs/7.2.2/firebase-storage.js"></script>
 
-
 </head>
 
 <body>
@@ -39,41 +38,67 @@
             <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="#">upgrade your browser</a> to improve your experience.</p>
         <![endif]-->
 
-    <div class="wrapper" style="background-image: url('design_files/images/loginback.jpg')">
+    <div class="wrapper" style="background-image: url('design_files/images/accountSettingsback.jpg')">
 
         <div class="inner">
             <div class="image-holder">
-                <img src="design_files/images/login.jpg">
+                <img src="design_files/images/asettings.jpg">
             </div>
 
             <form action="">
-                <h3>Login</h3>
-                <div class="form-wrapper">
-                    <input id="email" type="email" placeholder="Email Address" class="form-control">
-                    <i class="zmdi zmdi-email"></i>
+                <h3>Account Details</h3>
+                <div class="form-group">
+                    <input id="firstName" type="text" placeholder="First Name" class="form-control" required>
+                    <input id="lastName" type="text" placeholder="Last Name" class="form-control" required>
+
                 </div>
 
-
+                <div class="form-wrapper">
+                    <select name="" id="country" class="form-control">
+                        <option value="" disabled selected>Country</option>
+                        <option value="India">India</option>
+                        <option value="USA">USA</option>
+                        <option value="SA">SA</option>
+                        <option value="China">China</option>
+                        <option value="Russia">Russia</option>
+                    </select>
+                    <i class="zmdi zmdi-caret-down" style="font-size: 17px"></i>
+                </div>
 
                 <div class="form-wrapper">
-                    <input id="password" type="password" placeholder="password" class="form-control">
-                    <i class="zmdi zmdi-lock"></i>
+                    <input id="phone" type="number" placeholder="Phone number" class="form-control" required>
+                    <i class="zmdi zmdi-tablet-mac"></i>
+                </div>
+
+                <div class="form-wrapper">
+                    <select name="" id="gender" class="form-control">
+                            <option value="" disabled selected>Gender</option>
+                            <option value="male">Male</option>
+                            <option value="female">Female</option>
+                            <option value="others">Others</option>
+                           
+                        </select>
+                    <i class="zmdi zmdi-caret-down" style="font-size: 17px"></i>
+                </div>
+
+                <div class="form-wrapper">
+                    <input id="address" type="text" placeholder="Address" class="form-control" required>
+                    <i class="zmdi zmdi-pin"></i>
+                </div>
+
+                <div class="form-wrapper">
+                    <input id="bio" type="text" placeholder="Bio" class="form-control" required>
+                    <i class="zmdi zmdi-account-box-mail"></i>
                 </div>
 
                 <div class="form-group container-login100-form-btn">
-                    <button id="btn-signin" type="button">
-                        Sign in
+                    <button id="btn-update" type="button" style="color:aliceblue">
+                        Update and Reset
                         <i class="zmdi zmdi-arrow-right"></i>
                     </button>
                 </div>
 
-                <div class="w-full text-center" style="margin-top: 0%; font-size: 15px">
-                    <a href="forgotpassword.html" class="text-dark">Forgot Password?</a>
-                </div>
 
-                <div class="w-full text-center" style="margin-top: 76%; font-size: 15px">
-                    <a href="signup.html" class="text-dark">Don't have account?</a>
-                </div>
 
             </form>
 
@@ -89,31 +114,16 @@
     <script>
         firebase.auth().onAuthStateChanged(function(user) {
             if (user) {
-                // User is signed in.
-                var displayName = user.displayName;
-                var email = user.email;
-                var emailVerified = user.emailVerified;
-                var photoURL = user.photoURL;
-                var isAnonymous = user.isAnonymous;
-                var uid = user.uid;
-                var providerData = user.providerData;
 
-                console.log(user);
                 var userID = firebase.auth().currentUser.uid;
 
                 firebase.database().ref('users/' + userID).once('value').then(function(snapshot) {
 
                     if (snapshot.val()) {
                         window.location.href = "mainPage.html";
-                    } else {
-                        window.location.href = "accountSettings.html";
                     }
                 });
-                // ...
-            } else {
-                // User is signed out.
-                console.log("user signed out");
-                // ...
+
             }
         });
     </script>

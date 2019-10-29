@@ -82,7 +82,29 @@
 
 
 
-    <script src="js/index.js" async defer></script>
+    <script src="js/index.js"></script>
+
+    <script>
+        firebase.auth().onAuthStateChanged(function(user) {
+
+            if (user) {
+
+                var userID = firebase.auth().currentUser.uid;
+
+                firebase.database().ref('users/' + userID).once('value').then(function(snapshot) {
+
+                    if (snapshot.val()) {
+                        window.location.href = "mainPage.html";
+                    } else {
+                        window.location.href = "accountSettings.html";
+                    }
+                });
+
+            }
+
+
+        });
+    </script>
 
 </body>
 
