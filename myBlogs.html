@@ -1,0 +1,98 @@
+<hr class="bg-dark">
+<br><br><br>
+
+<div class="text-center bg-light text-dark">
+    <h3>My Blogs</h3>
+
+</div>
+
+<hr class="bg-dark">
+<br>
+<div class="container-fluid bg-3">
+    <div class="col-sm-12" id="blogs">
+
+    </div>
+
+</div>
+
+<br>
+
+
+
+
+<script>
+    //**************** Retrieving and display of db from firebase*******************************
+    var counter = 0;
+
+
+
+    var user = firebase.auth().currentUser;
+
+    var dbBlogs = firebase.database().ref().child("Blogs").orderByChild("uid").equalTo(user.uid);
+
+    dbBlogs.on("value", function(blogs) {
+
+        if (blogs.exists()) {
+
+            var blogsHtml = "";
+            blogs.forEach(function(singleBlock) {
+                counter = counter + 1;
+                console.log(singleBlock.val().image);
+                blogsHtml += "<div class='jumbotron bg-light text-dark boarder boarder-dark'>";
+
+                blogsHtml += "<div> <img width='1000px' height= '450' src ='";
+                blogsHtml += singleBlock.val().image;
+                blogsHtml += "'/></div> <br>";
+
+                blogsHtml += "<div class='row'>";
+                blogsHtml += "<div class='col-sm-5'> <p style='color:grey'>" +
+                    "Published by : " + singleBlock.val().name +
+                    "</p> </div>"
+
+                +
+                "<div class='col-sm-3'> <p style='color:grey;'>" +
+                "Time : " + singleBlock.val().time +
+                    "</p> </div>"
+
+                +
+                "<div class='col-sm-4'> <p style='color:grey;'>" +
+                "Date : " + singleBlock.val().date +
+                    "</p> </div>";
+                blogsHtml += "</div> <br>";
+
+                blogsHtml += "<div style='text-align: justify; color: black;'>";
+                blogsHtml += singleBlock.val().desc;
+                blogsHtml += "</div> <br>";
+
+                blogsHtml += "<div class='form-group' style='text-align: justify; color: black;'>";
+                blogsHtml += "<button class='form-control btn btn-light bg-dark text-white' onclick=deleteThePost('" + singleBlock.key + "')>Delete this post!!</button>";
+                blogsHtml += "</div> <br>";
+
+
+                blogsHtml += "</div>";
+                blogsHtml += "<hr class='bg-dark'>";
+                blogsHtml += "<br><br><br>";
+            });
+
+            $("#blogs").html(blogsHtml);
+        }
+    });
+
+    function deleteThePost(key) {
+
+        console.log(key);
+        var deleteRef = firebase.database().ref("Blogs").child(key);
+        console.log(deleteRef);
+        return deleteRef.remove()
+            .then(function() {
+                console.log("Successfully Deleted ", key);
+
+            })
+            .catch(function() {
+                console.log("Deletion Failed");
+            });
+
+    }
+
+    //**************** Retrieving and display of db from firebase ends here*******************************
+</script>
