@@ -31,6 +31,7 @@
 </head>
 
 <body>
+    <script src="js/index.js"></script>
     <!--[if lt IE 7]>
             <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="#">upgrade your browser</a> to improve your experience.</p>
         <![endif]-->
@@ -108,6 +109,8 @@
                 <div class="jumbotron bg-dark" style="margin-top: 15px">
                     <script>
                         var counter = 0;
+                        const TOTAL = 5000;
+                        var databaseRef = "";
                     </script>
                     <div class="container text-center">
                         <form id="main-form">
@@ -187,6 +190,7 @@
 
                 <!----------------Validation and uploading-------------------------->
 
+
                 <script>
                     var validImageTypes = ["image/gif", "image/jpeg", "image/png"]
 
@@ -242,7 +246,7 @@
                         //********************** Uploading and saving to Firebase
 
 
-                        var databaseRef = firebase.database().ref().child("Blogs");
+                        databaseRef = firebase.database().ref().child("Blogs");
 
                         databaseRef.once("value").then(function(snapshot) {
                             var name = blogpic["name"];
@@ -300,6 +304,7 @@
                                             "imageNmae": fileName,
                                             "desc": desc,
                                             "uid": user.uid,
+                                            "counter": TOTAL - counter,
                                             "name": userName,
                                             "time": time.toLocaleString('en-US', {
                                                 hour: 'numeric',
@@ -322,6 +327,8 @@
 
                                                 window.open("", "_self")
                                             }
+
+                                            resetForm();
                                         });
                                     });
                                 }
@@ -342,6 +349,59 @@
                         $("#upload-progress").html("completed");
 
                     }
+
+                    //**************** Retrieving and display of db from firebase*******************************
+
+
+
+
+
+                    var dbBlogs = firebase.database().ref().child("Blogs").orderByChild("counter");
+
+                    dbBlogs.on("value", function(blogs) {
+
+                        if (blogs.exists()) {
+
+                            var blogsHtml = "";
+                            blogs.forEach(function(singleBlock) {
+                                counter = counter + 1;
+                                console.log(singleBlock.val().image);
+                                blogsHtml += "<div class='jumbotron bg-light text-dark boarder boarder-dark'>";
+
+                                blogsHtml += "<div> <img width='1000px' height= '450' src ='";
+                                blogsHtml += singleBlock.val().image;
+                                blogsHtml += "'/></div> <br>";
+
+                                blogsHtml += "<div class='row'>";
+                                blogsHtml += "<div class='col-sm-5'> <p style='color:grey'>" +
+                                    "Published by : " + singleBlock.val().name +
+                                    "</p> </div>"
+
+                                +
+                                "<div class='col-sm-3'> <p style='color:grey;'>" +
+                                "Time : " + singleBlock.val().time +
+                                    "</p> </div>"
+
+                                +
+                                "<div class='col-sm-4'> <p style='color:grey;'>" +
+                                "Date : " + singleBlock.val().date +
+                                    "</p> </div>";
+                                blogsHtml += "</div> <br>";
+
+                                blogsHtml += "<div style='text-align: justify; color: black;'>";
+                                blogsHtml += singleBlock.val().desc;
+                                blogsHtml += "</div> <br>";
+
+                                blogsHtml += "</div>";
+                                blogsHtml += "<hr class='bg-dark'>";
+                                blogsHtml += "<br><br><br>";
+                            });
+
+                            $("#blogs").html(blogsHtml);
+                        }
+                    });
+
+                    //**************** Retrieving and display of db from firebase ends here*******************************
                 </script>
                 <!----------------Validation and uploading ends-------------------------->
 
@@ -355,9 +415,29 @@
 
 
 
-    <script src="js/index.js"></script>
+
 
     <script>
+        $("#logout-btn").click(function() {
+
+            //console.log("Logout clicked");
+
+            firebase.auth().signOut().then(function() {
+                console.log("user signed out");
+            }, function(error) {
+                console.log("Signout error " + error.message);
+
+            });
+
+
+        });
+
+
+
+
+
+
+
         firebase.auth().onAuthStateChanged(function(user) {
             if (!user) {
 

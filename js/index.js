@@ -39,19 +39,7 @@ $("#btn-signin").click(function() {
 
 });
 
-$("#logout-btn").click(function() {
 
-    //console.log("Logout clicked");
-
-    firebase.auth().signOut().then(function() {
-        console.log("user signed out");
-    }, function(error) {
-        console.log("Signout error " + error.message);
-
-    });
-
-
-});
 
 $("#btn-signup").click(function() {
 
