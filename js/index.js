@@ -1,12 +1,12 @@
 var firebaseConfig = {
-    apiKey: "AIzaSyBvlaZw1DUUDU_rFEX0rkPyiY5gXLCKWw8",
-    authDomain: "wadrobe-4e7f1.firebaseapp.com",
-    databaseURL: "https://wadrobe-4e7f1.firebaseio.com",
-    projectId: "wadrobe-4e7f1",
-    storageBucket: "wadrobe-4e7f1.appspot.com",
-    messagingSenderId: "251582900725",
-    appId: "1:251582900725:web:fd050deb400e85790f58bc",
-    measurementId: "G-CJ461YXPG2"
+    apiKey: "",
+    authDomain: "",
+    databaseURL: "",
+    projectId: "",
+    storageBucket: "",
+    messagingSenderId: "",
+    appId: "",
+    measurementId: ""
 };
 // Initialize Firebase
 firebase.initializeApp(firebaseConfig);
