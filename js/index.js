@@ -13,8 +13,7 @@ firebase.initializeApp(firebaseConfig);
 
 firebase.auth.Auth.Persistence.LOCAL;
 
-//TODO
-//firebase.analytics();
+
 
 console.log(firebase);
 
